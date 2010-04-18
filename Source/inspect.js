@@ -5,7 +5,10 @@ Object.inspect = function(o){
 	return '<unknown>';
 };
 
-String.implement('inspect',function(){return '"'+this.replace(/([\\"])/g,'\\$1')+'"'; });
+Class.prototype.inspect = $lambda('Class');
+Document.implement('inspect',$lambda('Document'));
+Window.implement('inspect',$lambda('Window'));
+String.implement('inspect',function(){ return '"'+this.replace(/([\\"])/g,'\\$1')+'"'; });
 Hash.implement('inspect',function(){ return this.getClean().inspect(); });
 Array.implement('inspect',function(){
 	var values = [];
@@ -15,9 +18,8 @@ Array.implement('inspect',function(){
 	}
 	return '[' + values.join(',') + ']';
 });
-Window.implement('keyOf',Hash.prototype.keyOf);
 Function.implement('inspect',function(){
-	if($type(this)=='function') return this.toString();
+	if($type(this)=='function') return '<function>';//this.toString();
 	return '<class>';
 });
 Element.implement('inspect',function(){
@@ -31,8 +33,6 @@ Element.implement('inspect',function(){
 	else ret += ' />';
 	return ret;
 });
-Document.implement('inspect',$lambda('Document'));
-Window.implement('inspect',$lambda('Window'));
 
 (function(){
 	var toString = function(){ return this.toString(); };
